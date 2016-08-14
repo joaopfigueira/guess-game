@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+
 
 //default ramdom number limit & guess limit
 int maxNum = 10;
@@ -8,7 +10,7 @@ int guessLimit = 5;
 int randomNumber;
 int counter = 0;
 
-void setArgs(int argc, char *argv[]);
+int setArgs(int argc, char *argv[]);
 void setNumber();
 void getNumber();
 void guess();
@@ -18,31 +20,33 @@ void displayHelp();
 int main(int argc, char *argv[])
 {
     setArgs(argc, argv);
-    setNumber();
-    //getNumber(); //that would be cheating :)
-    guess();
 
     return 0;
 }
 
-void setArgs(int argc, char *argv[])
+int setArgs(int argc, char *argv[])
 {
-    int i;
-    for(i=1; i < argc; i++) {
-        if(strcmp(argv[i], "-m") == 0){
-            maxNum = atoi(argv[i+1]);
-        } else if(strcmp(argv[i], "-g") == 0){
-            guessLimit = atoi(argv[i+1]);
-        } else if(strcmp(argv[i], "-h") == 0){
-            displayHelp();
-        } else {
-            if(argc > 1) {
-                printf("Invalid option.\n");
-                printf("try 'guess-game -h' for more information.\n");
-                exit(0);
-            }
+    int opt;
+    while((opt = getopt(argc, argv, "hm:g:")) != 1) {
+        switch (opt) {
+            case 'm':
+                maxNum = atoi(optarg);
+                break;
+            case 'g':
+                guessLimit = atoi(optarg);
+                break;
+            case 'h':
+                displayHelp();
+                break;
+            default:
+                setNumber();
+                //getNumber(); //that would be cheating :)
+                guess();
+                exit(EXIT_FAILURE);
         }
     }
+
+    return 0;
 }
 
 void setNumber()
