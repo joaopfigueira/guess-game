@@ -30,12 +30,25 @@ int setArgs(int argc, char *argv[])
     while((opt = getopt(argc, argv, "hm:g:")) != 1) {
         switch (opt) {
             case 'm':
-                maxNum = atoi(optarg);
+                if(strtol(optarg, NULL, 0) != 0) {
+                    maxNum = strtol(optarg, NULL, 0);
+                } else {
+                    printf("Max Random Number has to be a number!\n");
+                    displayHelp();
+                }
                 break;
             case 'g':
-                guessLimit = atoi(optarg);
+                if(strtol(optarg, NULL, 0) != 0) {
+                    guessLimit = strtol(optarg, NULL, 0);
+                } else {
+                    printf("Guess limit has to be a number!\n");
+                    displayHelp();
+                }
                 break;
             case 'h':
+                displayHelp();
+                break;
+            case '?':
                 displayHelp();
                 break;
             default:
@@ -96,8 +109,9 @@ void displayHelp()
     printf("Usage: guess-game [OPTIONS]...\n");
     printf("If no options are given, defaults to max random number 10 and max tries of 5\n");
     printf("\n");
-    printf("-m MAX RANDOM NUMBER            sets the maximum random number. Default: 10.\n");
-    printf("-g MAX TRIES                    sets the maximum tries. Default: 5.\n");
+    printf("-m<MAX RANDOM NUMBER>            sets the maximum random number. Default: 10.\n");
+    printf("-g<GUESS LIMIT>                  sets the maximum tries. Default: 5.\n");
+    printf("-h                               displays this help.\n");
     printf("\n");
     printf("guess-game on github: <https://github.com/joaopfigueira/guess-game>\n");
 
