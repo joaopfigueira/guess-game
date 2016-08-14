@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 //default ramdom number limit & guess limit
 int maxNum = 10;
@@ -12,6 +13,7 @@ void setNumber();
 void getNumber();
 void guess();
 void compare(int try);
+void displayHelp();
 
 int main(int argc, char *argv[])
 {
@@ -31,6 +33,14 @@ void setArgs(int argc, char *argv[])
             maxNum = atoi(argv[i+1]);
         } else if(strcmp(argv[i], "-g") == 0){
             guessLimit = atoi(argv[i+1]);
+        } else if(strcmp(argv[i], "-h") == 0){
+            displayHelp();
+        } else {
+            if(argc > 1) {
+                printf("Invalid option.\n");
+                printf("try 'guess-game -h' for more information.\n");
+                exit(0);
+            }
         }
     }
 }
@@ -75,4 +85,17 @@ void compare(int try)
     } else {
         printf("you guessed the number in %i tries!\n", counter);        
     }
+}
+
+void displayHelp()
+{
+    printf("Usage: guess-game [OPTIONS]...\n");
+    printf("If no options are given, defaults to max random number 10 and max tries of 5\n");
+    printf("\n");
+    printf("-m MAX RANDOM NUMBER            sets the maximum random number. Default: 10.\n");
+    printf("-g MAX TRIES                    sets the maximum tries. Default: 5.\n");
+    printf("\n");
+    printf("guess-game on github: <https://github.com/joaopfigueira/guess-game>\n");
+
+    exit(0);
 }
